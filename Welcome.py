@@ -64,7 +64,7 @@ with right_col:
     with st.expander("1. Configure OpenAI API Key", expanded=not bool(st.session_state.openai_api_key)):
         st.write("Provide your OpenAI API key to use the engine:")
         st.markdown("""
-        - Uses GPT-4 for arguments
+        - Uses GPT-4o for arguments
         - Secure session storage
         - Never saved or logged
         """)
