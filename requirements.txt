@@ -1,0 +1,9 @@
+streamlit
+nest-asyncio
+google-api-python-client
+langchain-core
+langchain-openai
+langgraph
+langsmith
+openai
+python-dotenv 
