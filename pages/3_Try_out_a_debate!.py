@@ -20,14 +20,28 @@ nest_asyncio.apply()
 logging.basicConfig(level=logging.INFO)
 tracemalloc.start()
 
+# Set page config
+st.set_page_config(
+    page_title="V3 Discourse Engine",
+    page_icon="🤖",
+    layout="wide"
+)
+
+# Centered logo
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    try:
+        st.image("assets/logo3.png", width=400)
+    except:
+        st.title("V3 Discourse Engine")
+
 # Check if OpenAI API key is available in session state
 if not st.session_state.get("openai_api_key"):
     st.error("⚠️ OpenAI API key is required. Please configure it in the home page first!")
     st.stop()
 
 # Set up page
-st.title("🤖 AI Debate Arena")
-st.sidebar.title("Debate Configuration")
+st.sidebar.title("Topic Configuration")
 
 @tool
 def google_search(search_term: str, num_results: int = 3) -> List[Dict[str, str]]:
@@ -46,7 +60,7 @@ tools = [google_search]
 # Initialize the language model with session state API key
 llm = ChatOpenAI(
     api_key=st.session_state.openai_api_key,
-    model="gpt-4o",
+    model="gpt-4",
     temperature=0.3,
     streaming=True
 )
@@ -346,12 +360,12 @@ Make your response exciting and use emojis as shown above to enhance readability
 Debate:\n{history}"""
 
 # Add a radio button for users to choose between predefined topics or custom topic
-topic_choice = st.sidebar.radio("Choose a debate topic:", ["Select from list", "Enter custom topic"])
+topic_choice = st.sidebar.radio("Choose your topic:", ["Select from examples", "Enter custom topic"])
 
-if topic_choice == "Select from list":
-    debate_topic = st.selectbox("Choose a debate topic:", DEBATE_TOPICS)
+if topic_choice == "Select from examples":
+    debate_topic = st.selectbox("Choose a topic to explore:", DEBATE_TOPICS)
 else:
-    debate_topic = st.text_input("Enter your custom debate topic:")
+    debate_topic = st.text_input("Enter your topic:")
 
 
 if st.button("Start Debate"):
@@ -507,3 +521,14 @@ if st.button("Start Debate"):
             st.markdown(formatted_html, unsafe_allow_html=True)
     else:
         st.error("An error occurred during the debate. No final decision was reached.")
+
+    # Footer
+    st.markdown("---")
+    col1, col2, col3 = st.columns([2, 1, 1])
+    with col1:
+        st.markdown("© 2024 V3 AI | Created by William VanSickle III")
+        st.markdown("[Visit V3 AI →](https://v3-ai.com)")
+    with col2:
+        st.markdown("[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/williavs)")
+    with col3:
+        st.markdown("[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/willyv3/)")
