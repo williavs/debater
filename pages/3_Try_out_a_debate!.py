@@ -14,6 +14,8 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import END, StateGraph
 from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
+from pathlib import Path
+import base64
 
 nest_asyncio.apply()
 
@@ -26,6 +28,22 @@ st.set_page_config(
     page_icon="🤖",
     layout="wide"
 )
+
+# Get the correct path by going up one directory level from pages
+assets_dir = Path(__file__).parent.parent / "assets"
+gif_path = assets_dir / "animate-debate.gif"
+
+try:
+    # Read and display the GIF
+    with open(gif_path, "rb") as file_:
+        contents = file_.read()
+        data_url = base64.b64encode(contents).decode("utf-8")
+        st.sidebar.markdown(
+            f'<img src="data:image/gif;base64,{data_url}" alt="V3 AI animated logo">',
+            unsafe_allow_html=True,
+        )
+except Exception as e:
+    st.error(f"Could not load animated logo: {str(e)}")
 
 # Centered logo
 col1, col2, col3 = st.columns([1, 2, 1])

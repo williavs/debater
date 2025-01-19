@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+import base64
+from pathlib import Path
 
 
 st.set_page_config(
@@ -13,9 +15,20 @@ if "api_keys_initialized" not in st.session_state:
     st.session_state.api_keys_initialized = True
     st.session_state.openai_api_key = ""
 
-st.sidebar.image("assets/v3.jpeg", width=400)
+assets_dir = Path(__file__).parent / "assets"
+gif_path = assets_dir / "animate-logo.gif"
 
-
+try:
+    # Read and display the GIF
+    with open(gif_path, "rb") as file_:
+        contents = file_.read()
+        data_url = base64.b64encode(contents).decode("utf-8")
+        st.sidebar.markdown(
+            f'<img src="data:image/gif;base64,{data_url}" alt="V3 AI animated logo">',
+            unsafe_allow_html=True,
+        )
+except Exception as e:
+    st.error(f"Could not load animated logo: {str(e)}")
 
 # Centered logo
 col1, col2, col3 = st.columns([1, 2, 1])
